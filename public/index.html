@@ -68,23 +68,22 @@
                 const container = document.getElementById('popularContainer');
                 container.innerHTML = '';
 
-                // Sesuaikan struktur data (asumsi data manga ada di result.data atau result.results)
-                const mangaList = result.data || result.results || result;
+                // Mengambil data dari properti data.mangas sesuai format API kamu
+                const mangaList = result.data?.mangas || [];
 
-                if (!mangaList || mangaList.length === 0) {
+                if (mangaList.length === 0) {
                     container.innerHTML = '<p class="col-span-full text-center text-red-400 text-sm">Tidak ada data populer ditemukan.</p>';
                     return;
                 }
 
                 mangaList.forEach(manga => {
                     const card = `
-                        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden hover:border-slate-700 transition flex flex-col">
+                        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden hover:border-slate-700 transition flex flex-col shadow-lg">
                             <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
-                                <img src="${manga.thumbnail || manga.image || ''}" alt="${manga.title}" class="object-cover w-full h-full" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                                <img src="${manga.thumbnail || ''}" alt="${manga.title}" class="object-cover w-full h-full" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
                             </div>
                             <div class="p-3 flex flex-col flex-grow justify-between">
                                 <h3 class="text-sm font-semibold line-clamp-2 text-slate-200 mb-1">${manga.title}</h3>
-                                <span class="text-xs text-slate-400">${manga.latestChapter || manga.chapter || ''}</span>
                             </div>
                         </div>
                     `;
@@ -105,22 +104,22 @@
                 const container = document.getElementById('latestContainer');
                 container.innerHTML = '';
 
-                const mangaList = result.data || result.results || result;
+                // Mengambil data dari properti data.mangas sesuai format API kamu
+                const mangaList = result.data?.mangas || [];
 
-                if (!mangaList || mangaList.length === 0) {
+                if (mangaList.length === 0) {
                     container.innerHTML = '<p class="col-span-full text-center text-red-400 text-sm">Tidak ada update terbaru.</p>';
                     return;
                 }
 
                 mangaList.forEach(manga => {
                     const card = `
-                        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden hover:border-slate-700 transition flex flex-col">
+                        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden hover:border-slate-700 transition flex flex-col shadow-lg">
                             <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
-                                <img src="${manga.thumbnail || manga.image || ''}" alt="${manga.title}" class="object-cover w-full h-full" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                                <img src="${manga.thumbnail || ''}" alt="${manga.title}" class="object-cover w-full h-full" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
                             </div>
                             <div class="p-3 flex flex-col flex-grow justify-between">
                                 <h3 class="text-sm font-semibold line-clamp-2 text-slate-200 mb-1">${manga.title}</h3>
-                                <span class="text-xs text-cyan-400 font-medium">${manga.latestChapter || manga.chapter || ''}</span>
                             </div>
                         </div>
                     `;
