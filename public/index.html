@@ -3,112 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MANHWA-KITA</title>
+    <title>MANHWA-KITA - Baca Komik Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        darkbg: '#0a0d14',
+                        cardbg: '#121622',
+                        accent: '#FFB800',
+                        brandbtn: '#5b56f5' /* Warna ungu kebiruan untuk tombol Lanjut Baca */
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { background-color: #0a0d14; color: #E2E8F0; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-amber-500 selection:text-slate-950">
+<body class="selection:bg-accent selection:text-black">
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <h1 onclick="goHome()" class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 flex items-center gap-2 cursor-pointer">
-                ⚡ MANHWA <span class="text-white font-light">-KITA</span>
+    <!-- Navbar -->
+    <header class="fixed top-0 w-full z-50 bg-darkbg/85 backdrop-blur-xl border-b border-white/5 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <h1 onclick="goHome()" class="text-2xl font-black tracking-tight text-white flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
+                <span class="text-accent text-3xl">⚡</span> MANHWA<span class="text-white/40 font-light">-KITA</span>
             </h1>
-            <nav class="flex items-center gap-6 text-sm font-medium">
-                <button onclick="goHome()" class="text-amber-400 hover:text-amber-300 transition flex items-center gap-1.5">🏠 Beranda</button>
-                <button onclick="showHistory()" class="text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">🕒 Riwayat Baca</button>
+            <nav class="flex items-center gap-6 sm:gap-8 text-sm font-medium">
+                <button onclick="goHome()" class="text-white hover:text-accent transition">🏠 Beranda</button>
+                <button onclick="showHistory()" class="text-white/60 hover:text-white transition">🕒 Riwayat Baca</button>
             </nav>
-            <div class="w-full sm:w-80 flex gap-2">
-                <input type="text" id="searchInput" placeholder="Cari manhwa..." class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:border-amber-400 text-slate-200 placeholder-slate-500" onkeypress="if(event.key==='Enter') searchMangaAction()">
-                <button onclick="searchMangaAction()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-sm transition shadow-lg">Cari</button>
+            <div class="w-full md:w-72 flex gap-2">
+                <input type="text" id="searchInput" placeholder="Cari manhwa..." class="w-full bg-white/5 border border-white/10 rounded-full px-5 py-2 text-sm focus:outline-none focus:border-accent text-white placeholder-white/40 transition-all" onkeypress="if(event.key==='Enter') searchMangaAction()">
             </div>
         </div>
     </header>
 
-    <!-- Main App Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Main Container -->
+    <main class="w-full pt-32 pb-10 min-h-screen max-w-7xl mx-auto px-4">
         
         <!-- VIEW 1: BERANDA -->
-        <div id="homeView" class="space-y-8">
-            <div id="popularSectionWrapper">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-base sm:text-lg font-bold text-amber-400 flex items-center gap-2">🔥 Manhwa Terpopuler</h2>
+        <div id="homeView" class="space-y-10">
+            
+            <!-- HERO BANNER: JATI DIRI MANHWA-KITA -->
+            <div id="heroBanner" class="relative bg-gradient-to-br from-amber-500 via-orange-600 to-red-600 rounded-3xl p-8 sm:p-10 overflow-hidden shadow-2xl shadow-orange-500/20">
+                <div class="relative z-10 w-full md:w-2/3 space-y-4">
+                    <span class="bg-black/30 text-white px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full backdrop-blur-md">Pusat Bacaan #1</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+                        Eksplorasi Dunia <br> <span class="text-black">Tanpa Batas.</span>
+                    </h2>
+                    <p class="text-white/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">
+                        Selamat datang di <b>MANHWA-KITA</b>! Nikmati ribuan chapter terbaru dengan kualitas gambar terbaik, server super cepat, dan tanpa iklan pop-up yang mengganggu.
+                    </p>
                 </div>
-                <div id="popularContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-3 pt-1 snap-x">
-                    <div class="w-full text-center py-6 text-slate-500 text-xs animate-pulse">Memuat data terpopuler...</div>
+                <!-- Dekorasi -->
+                <div class="absolute -right-4 -bottom-10 opacity-20 transform rotate-12 text-[15rem] select-none pointer-events-none">⚡</div>
+            </div>
+
+            <!-- POPULER -->
+            <div id="popularSectionWrapper">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span class="text-accent">🔥</span> Sedang Hangat</h2>
+                </div>
+                <div id="popularContainer" class="flex gap-4 overflow-x-auto no-scrollbar pb-4 snap-x">
+                    <div class="w-full text-center py-10 text-white/40 animate-pulse text-sm">Membangunkan data...</div>
                 </div>
             </div>
 
+            <!-- TERBARU / HASIL PENCARIAN -->
             <div>
-                <h2 id="mainSectionTitle" class="text-base sm:text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">🆕 Update Terbaru</h2>
-                <div id="latestContainer" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
-                    <div class="col-span-full text-center py-10 text-slate-500 text-sm animate-pulse">Memuat data...</div>
+                <h2 id="mainSectionTitle" class="text-xl font-bold text-white mb-4 flex items-center gap-2"><span class="text-cyan-400">🆕</span> Update Terbaru</h2>
+                <div id="latestContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+                    <div class="col-span-full text-center py-10 text-white/40 animate-pulse text-sm">Mengambil update...</div>
                 </div>
             </div>
         </div>
 
         <!-- VIEW 2: DETAIL MANHWA -->
-        <div id="detailView" class="hidden space-y-6">
-            <button onclick="goHome()" class="text-sm text-amber-400 hover:underline flex items-center gap-1 font-semibold">&larr; Kembali ke Beranda</button>
-            <div id="detailContent" class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-900/60 border border-slate-800/80 p-5 sm:p-6 rounded-2xl shadow-xl">
-                <!-- Diisi via JS -->
+        <div id="detailView" class="hidden">
+            <button onclick="goHome()" class="mb-6 text-sm text-white/60 hover:text-accent flex items-center gap-2 font-medium transition">&larr; Kembali</button>
+            <div class="flex flex-col md:flex-row gap-8 bg-cardbg/80 border border-white/5 p-6 sm:p-8 rounded-3xl shadow-xl">
+                <div class="flex-shrink-0 w-48 sm:w-56 mx-auto md:mx-0">
+                    <img id="detailCover" src="" class="w-full aspect-[3/4] object-cover rounded-2xl shadow-lg border border-white/10">
+                </div>
+                <div class="flex-grow flex flex-col justify-center">
+                    <h2 id="detailTitle" class="text-3xl font-black text-white leading-tight mb-3">Judul Komik</h2>
+                    
+                    <div class="relative mb-6">
+                        <p id="detailSynopsis" class="text-white/60 text-sm leading-relaxed line-clamp-3 transition-all duration-300"></p>
+                        <button id="synopsisToggleBtn" onclick="toggleSynopsis()" class="text-accent text-sm font-bold mt-2 hover:underline hidden">Baca Selengkapnya ▾</button>
+                    </div>
+                    
+                    <div class="w-full h-px bg-white/10 mb-6"></div>
+                    
+                    <h3 class="text-base font-bold text-white mb-3">Daftar Chapter <span id="chapterCount" class="text-white/40 font-normal"></span></h3>
+                    <div id="chapterListContainer" class="max-h-[350px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                        <!-- List chapter -->
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- VIEW 3: BACA CHAPTER -->
-        <div id="readerView" class="hidden space-y-4">
-            <div class="flex items-center justify-between bg-slate-900/90 px-4 py-2.5 rounded-xl border border-slate-800/60 backdrop-blur text-xs">
-                <button onclick="backToDetail()" class="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg font-medium transition text-slate-300">&larr; Menu Chapter</button>
-                <span id="readerTitle" class="font-bold text-amber-400 truncate max-w-[180px] sm:max-w-md">Chapter ...</span>
+        <div id="readerView" class="hidden relative space-y-6">
+            <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg px-5 py-3 rounded-2xl border border-white/5 shadow-lg">
+                <button onclick="backToDetail()" class="text-white/60 hover:text-white text-xs sm:text-sm font-medium transition">&larr; Menu</button>
+                <span id="readerTitle" class="font-bold text-accent truncate px-2 max-w-[60%] text-sm">Chapter ...</span>
+                <span class="w-10"></span>
             </div>
 
-            <div id="pagesContainer" class="flex flex-col items-center justify-center max-w-3xl mx-auto bg-black rounded-xl overflow-hidden min-h-[60vh]">
-                <div class="text-center py-20 text-slate-500 animate-pulse">Memuat halaman gambar...</div>
+            <div id="pagesContainer" class="flex flex-col items-center justify-center w-full bg-black rounded-2xl overflow-hidden min-h-[60vh]">
+                <div class="py-20 text-white/40 animate-pulse text-sm">Menyiapkan halaman...</div>
             </div>
 
-            <!-- Navigasi Bawah (Diperbaiki: Sebelumnya = chapter lama, Selanjutnya = chapter baru) -->
-            <div class="flex items-center justify-between bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 max-w-3xl mx-auto">
-                <button id="prevBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3.5 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">← Sebelumnya</button>
-                <span id="readerChapterInfo" class="text-xs text-slate-400 font-medium">Navigasi</span>
-                <button id="nextBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3.5 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya →</button>
+            <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg p-4 rounded-2xl border border-white/5 shadow-lg">
+                <button id="prevBtn" onclick="changeChapter(-1)" class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-20 flex items-center gap-2">
+                    &larr; Sebelumnya
+                </button>
+                <span class="text-[10px] sm:text-xs font-bold text-white/30 uppercase tracking-widest">Navigasi</span>
+                <button id="nextBtn" onclick="changeChapter(1)" class="bg-accent hover:bg-yellow-400 text-black px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-20 flex items-center gap-2">
+                    Selanjutnya &rarr;
+                </button>
             </div>
         </div>
 
-        <!-- VIEW 4: RIWAYAT BACA -->
-        <div id="historyView" class="hidden space-y-6">
-            <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">🕒 Riwayat Baca Terakhir</h2>
-            <div id="historyContainer" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
-                <div class="col-span-full text-center py-10 text-slate-500 text-sm">Belum ada riwayat baca.</div>
+        <!-- VIEW 4: RIWAYAT BACA (DESAIN LIST SESUAI REQUEST) -->
+        <div id="historyView" class="hidden space-y-6 max-w-4xl mx-auto">
+            <div class="flex items-center justify-between border-l-4 border-brandbtn pl-3">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">⏱ Riwayat Baca Terakhir</h2>
+                <button onclick="clearHistory()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition shadow-lg shadow-red-500/20">
+                    🗑 Bersihkan Riwayat
+                </button>
+            </div>
+            
+            <div id="historyContainer" class="flex flex-col gap-4">
+                <!-- Diisi via JS -->
             </div>
         </div>
 
     </main>
 
-    <!-- JavaScript Logika Aplikasi -->
     <script>
         let currentMangaId = null;
         let currentChaptersList = [];
         let currentChapterIndex = 0;
+        let isSynopsisExpanded = false;
 
         function switchView(viewName) {
             ['homeView', 'detailView', 'readerView', 'historyView'].forEach(v => {
                 document.getElementById(v).classList.add('hidden');
             });
             document.getElementById(viewName).classList.remove('hidden');
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function goHome() {
             switchView('homeView');
+            document.getElementById('heroBanner').style.display = 'block';
             document.getElementById('popularSectionWrapper').style.display = 'block';
-            document.getElementById('mainSectionTitle').innerText = '🆕 Update Terbaru';
+            document.getElementById('mainSectionTitle').innerHTML = '<span class="text-cyan-400">🆕</span> Update Terbaru';
             document.getElementById('searchInput').value = '';
             loadPopularManga();
             loadLatestManga();
+        }
+
+        function createCard(manga, isPopular = false) {
+            const widthClass = isPopular ? 'min-w-[140px] sm:min-w-[160px] snap-start' : 'w-full';
+            return `
+                <div onclick="loadDetail('${manga.url}')" class="${widthClass} bg-cardbg rounded-xl overflow-hidden hover:ring-2 hover:ring-accent transition-all duration-300 cursor-pointer group shadow-lg">
+                    <div class="aspect-[3/4] relative bg-white/5">
+                        <img src="${manga.thumbnail || ''}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80"></div>
+                        <div class="absolute bottom-2 left-2 right-2">
+                            <h3 class="text-xs sm:text-sm font-bold text-white group-hover:text-accent line-clamp-2 leading-tight">${manga.title}</h3>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         async function loadPopularManga() {
@@ -117,9 +199,8 @@
                 const json = await res.json();
                 const list = json.data?.mangas || [];
                 const container = document.getElementById('popularContainer');
-                container.innerHTML = '';
-                if(list.length === 0) { container.innerHTML = '<p class="text-xs text-slate-500">Tidak ada data.</p>'; return; }
-                list.forEach(m => { container.innerHTML += createCard(m, true); });
+                if(list.length === 0) return container.innerHTML = '<p class="text-white/40 text-sm">Tidak ada data.</p>';
+                container.innerHTML = list.map(m => createCard(m, true)).join('');
             } catch (e) { console.error(e); }
         }
 
@@ -129,97 +210,102 @@
                 const json = await res.json();
                 const list = json.data?.mangas || [];
                 const container = document.getElementById('latestContainer');
-                container.innerHTML = '';
-                if(list.length === 0) { container.innerHTML = '<p class="col-span-full text-sm text-slate-500">Tidak ada data.</p>'; return; }
-                list.forEach(m => { container.innerHTML += createCard(m, false); });
+                if(list.length === 0) return container.innerHTML = '<p class="col-span-full text-white/40 text-sm">Tidak ada data.</p>';
+                container.innerHTML = list.map(m => createCard(m, false)).join('');
             } catch (e) { console.error(e); }
-        }
-
-        function createCard(manga, isPopular = false) {
-            const id = manga.url; 
-            const widthClass = isPopular ? 'min-w-[130px] sm:min-w-[150px] w-[130px] sm:w-[150px]' : 'w-full';
-            return `
-                <div onclick="loadDetail('${id}')" class="${widthClass} bg-slate-900/80 border border-slate-800/80 rounded-xl overflow-hidden hover:border-amber-500/50 hover:shadow-lg transition-all duration-300 flex flex-col snap-start group cursor-pointer">
-                    <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
-                        <img src="${manga.thumbnail || ''}" alt="${manga.title}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
-                    </div>
-                    <div class="p-2 flex flex-col flex-grow justify-between">
-                        <h3 class="text-xs font-semibold line-clamp-2 text-slate-200 group-hover:text-amber-400 transition">${manga.title}</h3>
-                    </div>
-                </div>
-            `;
         }
 
         async function searchMangaAction() {
             const query = document.getElementById('searchInput').value.trim();
-            if(!query) return alert('Masukkan judul manga yang ingin dicari!');
+            if(!query) return;
             
             switchView('homeView');
+            document.getElementById('heroBanner').style.display = 'none'; // Sembunyikan banner saat cari
             document.getElementById('popularSectionWrapper').style.display = 'none';
-            document.getElementById('mainSectionTitle').innerText = `🔍 Hasil Pencarian: "${query}"`;
+            document.getElementById('mainSectionTitle').innerHTML = `🔍 Pencarian: <span class="text-white">"${query}"</span>`;
             
             const container = document.getElementById('latestContainer');
-            container.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 animate-pulse">Mencari manga...</div>';
+            container.innerHTML = '<div class="col-span-full text-center py-20 text-white/40 text-sm animate-pulse">Mencari manga...</div>';
 
             try {
                 const res = await fetch(`/api/manga/search?q=${encodeURIComponent(query)}&page=1`);
                 const json = await res.json();
                 const list = json.data?.mangas || json.data || [];
                 
-                container.innerHTML = '';
                 if(list.length === 0) {
-                    container.innerHTML = '<p class="col-span-full text-center text-red-400 py-10">Manga tidak ditemukan.</p>';
+                    container.innerHTML = '<p class="col-span-full text-center py-20 text-white/50 text-sm">Manga tidak ditemukan.</p>';
                     return;
                 }
-                list.forEach(m => { container.innerHTML += createCard(m, false); });
+                container.innerHTML = list.map(m => createCard(m, false)).join('');
             } catch (err) {
-                console.error(err);
-                container.innerHTML = '<p class="col-span-full text-center text-red-400 py-10">Gagal melakukan pencarian.</p>';
+                container.innerHTML = '<p class="col-span-full text-center py-20 text-red-400 text-sm">Gagal mencari data.</p>';
+            }
+        }
+
+        function toggleSynopsis() {
+            const syn = document.getElementById('detailSynopsis');
+            const btn = document.getElementById('synopsisToggleBtn');
+            isSynopsisExpanded = !isSynopsisExpanded;
+            if (isSynopsisExpanded) {
+                syn.classList.remove('line-clamp-3');
+                btn.innerText = 'Tutup ▴';
+            } else {
+                syn.classList.add('line-clamp-3');
+                btn.innerText = 'Baca Selengkapnya ▾';
             }
         }
 
         async function loadDetail(mangaId) {
             currentMangaId = mangaId;
             switchView('detailView');
-            const container = document.getElementById('detailContent');
-            container.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 animate-pulse">Memuat detail manga & daftar chapter...</div>';
+            document.getElementById('detailTitle').innerText = 'Memuat...';
+            document.getElementById('detailSynopsis').innerText = '';
+            document.getElementById('synopsisToggleBtn').classList.add('hidden');
+            document.getElementById('chapterListContainer').innerHTML = '<div class="text-center py-10 text-white/40 text-sm animate-pulse">Memuat daftar chapter...</div>';
 
             try {
                 const res = await fetch(`/api/manga/${mangaId}`);
-                const json = await res.json();
-                const data = json.data || json;
+                const data = (await res.json()).data || {};
 
                 const chapRes = await fetch(`/api/manga/${mangaId}/chapters`);
-                const chapJson = await chapRes.json();
-                let rawChapters = chapJson.data?.chapters || chapJson.chapters || chapJson.data || [];
+                let chapters = (await chapRes.json()).data?.chapters || [];
                 
-                // BALIK URUTAN CHAPTER: Supaya Chapter 1 berada di paling bawah (urutan kronologis benar)
-                currentChaptersList = rawChapters.reverse();
+                // Urutkan supaya Chapter 1 ada di bawah
+                if (chapters.length > 1) {
+                    const firstNum = parseInt(((chapters[0].title || '').match(/\d+/) || ['0'])[0]);
+                    const lastNum = parseInt(((chapters[chapters.length-1].title || '').match(/\d+/) || ['0'])[0]);
+                    if (firstNum < lastNum) chapters.reverse();
+                }
+                currentChaptersList = chapters;
 
-                container.innerHTML = `
-                    <div class="aspect-[3/4] rounded-xl overflow-hidden bg-slate-800 shadow-2xl border border-slate-700/50">
-                        <img src="${data.thumbnail || data.cover || ''}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="md:col-span-2 space-y-4">
-                        <h2 class="text-xl sm:text-2xl font-black text-amber-400">${data.title || 'Judul Manga'}</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-h-36 overflow-y-auto pr-2">${data.synopsis || data.description || 'Tidak ada sinopsis tersedia.'}</p>
-                        <div class="pt-2">
-                            <h3 class="text-sm font-bold text-cyan-400 mb-2 flex items-center gap-2">📖 Daftar Chapter (${currentChaptersList.length})</h3>
-                            <div class="max-h-80 overflow-y-auto space-y-1.5 pr-2 border border-slate-800/80 p-2.5 rounded-xl bg-slate-950/80">
-                                ${currentChaptersList.length > 0 ? currentChaptersList.map((ch, idx) => `
-                                    <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-slate-900/90 hover:bg-slate-800 border border-slate-800/80 px-3 py-2.5 rounded-lg text-xs sm:text-sm flex justify-between items-center transition group">
-                                        <span class="font-medium text-slate-200 group-hover:text-amber-400 transition">${ch.title || ch.chapterName || 'Chapter ' + (idx+1)}</span>
-                                        <span class="text-[11px] text-amber-400 font-semibold bg-amber-500/10 px-2 py-0.5 rounded">Baca &rarr;</span>
-                                    </button>
-                                `).join('') : '<p class="text-center text-xs text-slate-500 py-3">Chapter tidak ditemukan.</p>'}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } catch (err) {
-                console.error(err);
-                container.innerHTML = '<p class="text-red-400 text-center col-span-full text-sm">❌ Gagal memuat detail manga.</p>';
-            }
+                document.getElementById('detailCover').src = data.thumbnail || data.cover || '';
+                document.getElementById('detailTitle').innerText = data.title || 'Tanpa Judul';
+                document.getElementById('chapterCount').innerText = `(${chapters.length} Bab)`;
+                
+                const synText = data.synopsis || data.description || 'Tidak ada sinopsis.';
+                document.getElementById('detailSynopsis').innerText = synText;
+                isSynopsisExpanded = false;
+                document.getElementById('detailSynopsis').classList.add('line-clamp-3');
+                if (synText.length > 150) {
+                    const btn = document.getElementById('synopsisToggleBtn');
+                    btn.classList.remove('hidden');
+                    btn.innerText = 'Baca Selengkapnya ▾';
+                }
+
+                const listContainer = document.getElementById('chapterListContainer');
+                if (chapters.length === 0) {
+                    listContainer.innerHTML = '<p class="text-white/40 py-4 text-sm">Belum ada chapter.</p>';
+                    return;
+                }
+
+                listContainer.innerHTML = chapters.map((ch, idx) => `
+                    <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-white/5 hover:bg-white/10 px-5 py-3.5 rounded-xl text-sm flex justify-between items-center transition group">
+                        <span class="font-medium text-white/80 group-hover:text-accent transition">${ch.title || 'Chapter ' + (chapters.length - idx)}</span>
+                        <span class="text-[11px] bg-accent text-black font-bold px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition">BACA</span>
+                    </button>
+                `).join('');
+                
+            } catch (err) { console.error(err); }
         }
 
         async function loadChapterPages(index) {
@@ -230,47 +316,43 @@
             const chapterId = chapter.url || chapter.chapterId || chapter.id;
 
             switchView('readerView');
-            document.getElementById('readerTitle').innerText = chapter.title || chapter.chapterName || `Chapter ${index+1}`;
+            document.getElementById('readerTitle').innerText = chapter.title || `Chapter ${index+1}`;
             
-            // Logika tombol navigasi: Karena array sudah dibalik (Chapter 1 di index 0), 
-            // Sebelumnya (index berkurang) = Chapter lama, Selanjutnya (index bertambah) = Chapter baru.
-            document.getElementById('prevBtn').disabled = (index <= 0);
-            document.getElementById('nextBtn').disabled = (index >= currentChaptersList.length - 1);
+            document.getElementById('prevBtn').disabled = (index >= currentChaptersList.length - 1);
+            document.getElementById('nextBtn').disabled = (index <= 0);
 
             const container = document.getElementById('pagesContainer');
-            container.innerHTML = '<div class="text-center py-20 text-slate-500 animate-pulse text-xs">Memuat halaman gambar...</div>';
+            container.innerHTML = '<div class="py-32 text-white/40 text-sm animate-pulse tracking-widest uppercase">Memuat Panel...</div>';
 
+            // Simpan riwayat dengan tanggal
+            const today = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
             saveToHistory({
                 id: currentMangaId,
-                title: document.querySelector('#detailContent h2')?.innerText || 'Manga',
-                thumbnail: document.querySelector('#detailContent img')?.src || '',
-                chapterTitle: chapter.title || chapter.chapterName || `Chapter ${index+1}`,
-                chapterIndex: index
+                title: document.getElementById('detailTitle').innerText,
+                thumbnail: document.getElementById('detailCover').src,
+                chapterTitle: chapter.title,
+                date: today
             });
 
             try {
                 const res = await fetch(`/api/manga/chapter/${chapterId}/pages`);
-                const json = await res.json();
-                const pages = json.data?.pages || json.pages || json.data || json;
+                const pages = (await res.json()).data?.pages || [];
 
-                container.innerHTML = '';
-                if (!pages || pages.length === 0) {
-                    container.innerHTML = '<p class="text-red-400 text-center py-10 text-xs">Gambar halaman tidak tersedia.</p>';
+                if (pages.length === 0) {
+                    container.innerHTML = '<p class="text-red-400 py-20 text-sm">Gambar tidak ditemukan.</p>';
                     return;
                 }
 
-                pages.forEach(page => {
-                    const pageUrl = typeof page === 'string' ? page : (page.url || page.imageUrl || page);
-                    container.innerHTML += `<img src="${pageUrl}" class="w-full max-w-2xl object-contain block mx-auto mb-0.5" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat+Gambar'">`;
-                });
+                container.innerHTML = pages.map(page => {
+                    const url = typeof page === 'string' ? page : page.url;
+                    return `<img src="${url}" class="w-full max-w-3xl block mx-auto object-contain mb-1" loading="lazy">`;
+                }).join('');
             } catch (err) {
-                console.error(err);
-                container.innerHTML = '<p class="text-red-400 text-center py-10 text-xs">❌ Gagal memuat halaman chapter.</p>';
+                container.innerHTML = '<p class="text-red-400 py-20 text-sm">Gagal memuat gambar.</p>';
             }
         }
 
         function changeChapter(direction) {
-            // direction -1 = Sebelumnya, direction 1 = Selanjutnya
             const newIndex = currentChapterIndex + direction;
             if (newIndex >= 0 && newIndex < currentChaptersList.length) {
                 loadChapterPages(newIndex);
@@ -282,43 +364,53 @@
         }
 
         function saveToHistory(item) {
-            let history = JSON.parse(localStorage.getItem('manga_history') || '[]');
+            let history = JSON.parse(localStorage.getItem('manhwa_history') || '[]');
             history = history.filter(h => h.id !== item.id);
             history.unshift(item);
-            if (history.length > 20) history.pop();
-            localStorage.setItem('manga_history', JSON.stringify(history));
+            if (history.length > 50) history.pop();
+            localStorage.setItem('manhwa_history', JSON.stringify(history));
         }
 
+        function clearHistory() {
+            if(confirm('Yakin ingin menghapus semua riwayat bacaan?')) {
+                localStorage.removeItem('manhwa_history');
+                showHistory();
+            }
+        }
+
+        // FUNGSI RENDER HISTORY MODEL LIST
         function showHistory() {
             switchView('historyView');
-            const history = JSON.parse(localStorage.getItem('manga_history') || '[]');
+            const history = JSON.parse(localStorage.getItem('manhwa_history') || '[]');
             const container = document.getElementById('historyContainer');
-            container.innerHTML = '';
-
+            
             if (history.length === 0) {
-                container.innerHTML = '<p class="col-span-full text-center text-slate-500 text-sm py-10">Belum ada riwayat baca.</p>';
+                container.innerHTML = '<div class="w-full text-center py-20 text-white/40 text-sm bg-cardbg rounded-2xl border border-white/5">Riwayat masih kosong.</div>';
                 return;
             }
 
-            history.forEach(h => {
-                container.innerHTML += `
-                    <div onclick="loadDetail('${h.id}')" class="bg-slate-900/80 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/50 cursor-pointer transition flex flex-col group">
-                        <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
-                            <img src="${h.thumbnail}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                        </div>
-                        <div class="p-2 flex flex-col flex-grow justify-between">
-                            <h3 class="text-xs font-semibold line-clamp-1 text-slate-200">${h.title}</h3>
-                            <span class="text-[10px] text-amber-400 mt-1 font-medium">${h.chapterTitle}</span>
-                        </div>
+            container.innerHTML = history.map(h => `
+                <div class="bg-cardbg rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 border border-white/5 shadow-md hover:border-white/10 transition">
+                    <img src="${h.thumbnail}" class="w-20 h-28 object-cover rounded-lg flex-shrink-0 bg-white/5" onerror="this.src='https://via.placeholder.com/80x112?text=No+Image'">
+                    
+                    <div class="flex-grow min-w-0">
+                        <h3 class="text-white font-bold text-base sm:text-lg line-clamp-1 mb-1">${h.title}</h3>
+                        <p class="text-brandbtn text-xs sm:text-sm flex items-center gap-1 font-medium bg-brandbtn/10 inline-block px-2 py-0.5 rounded text-white font-bold">
+                            🔖 ${h.chapterTitle}
+                        </p>
+                        <p class="text-white/40 text-xs mt-2 font-medium">Dibaca pada: ${h.date || 'Hari ini'}</p>
                     </div>
-                `;
-            });
+                    
+                    <button onclick="loadDetail('${h.id}')" class="w-full sm:w-auto mt-3 sm:mt-0 bg-brandbtn hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition shadow-lg shadow-brandbtn/20 flex-shrink-0">
+                        ▶ Lanjut Baca
+                    </button>
+                </div>
+            `).join('');
         }
 
-        window.onload = () => {
-            goHome();
-        };
+        window.onload = () => goHome();
     </script>
 </body>
 </html>
+
 
