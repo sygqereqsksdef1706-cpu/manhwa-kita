@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANHWA-KITA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <h1 onclick="goHome()" class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 flex items-center gap-2 cursor-pointer">
+                ⚡ MANHWA <span class="text-white font-light">-KITA</span>
+            </h1>
+            <nav class="flex items-center gap-6 text-sm font-medium">
+                <button onclick="goHome()" class="text-amber-400 hover:text-amber-300 transition flex items-center gap-1.5">🏠 Beranda</button>
+                <button onclick="showHistory()" class="text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">🕒 Riwayat Baca</button>
+            </nav>
+            <div class="w-full sm:w-80 flex gap-2">
+                <input type="text" id="searchInput" placeholder="Cari manhwa..." class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:border-amber-400 text-slate-200 placeholder-slate-500">
+                <button onclick="searchMangaAction()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-sm transition shadow-lg">Cari</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- VIEW 1: BERANDA -->
+        <div id="homeView" class="space-y-10">
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">🔥 Manhwa Terpopuler</h2>
+                </div>
+                <div id="popularContainer" class="flex gap-4 overflow-x-auto no-scrollbar pb-4 pt-1 snap-x">
+                    <div class="w-full text-center py-10 text-slate-500 text-sm animate-pulse">Memuat data terpopuler...</div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">🆕 Update Terbaru</h2>
+                <div id="latestContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="col-span-full text-center py-10 text-slate-500 text-sm animate-pulse">Memuat update terbaru...</div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 2: DETAIL MANHWA -->
+        <div id="detailView" class="hidden space-y-8">
+            <button onclick="goHome()" class="text-sm text-amber-400 hover:underline flex items-center gap-1">&larr; Kembali ke Beranda</button>
+            <div id="detailContent" class="grid grid-cols-1 md:grid-cols-3 gap-8 bg-slate-900/40 border border-slate-800/80 p-6 rounded-2xl">
+                <!-- Diisi via JS -->
+            </div>
+        </div>
+
+        <!-- VIEW 3: BACA CHAPTER -->
+        <div id="readerView" class="hidden space-y-6">
+            <div class="flex items-center justify-between bg-slate-900/80 p-4 rounded-xl border border-slate-800 sticky top-20 z-40 backdrop-blur">
+                <button onclick="backToDetail()" class="text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-medium transition">&larr; Daftar Chapter</button>
+                <h2 id="readerTitle" class="text-sm font-bold text-amber-400 truncate max-w-xs sm:max-w-md">Chapter ...</h2>
+                <div class="flex gap-2">
+                    <button id="prevBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold transition">Sebelumnya</button>
+                    <button id="nextBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold transition">Selanjutnya</button>
+                </div>
+            </div>
+            <div id="pagesContainer" class="flex flex-col items-center justify-center max-w-3xl mx-auto space-y-2">
+                <div class="text-center py-20 text-slate-500 animate-pulse">Memuat halaman gambar...</div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: RIWAYAT BACA -->
+        <div id="historyView" class="hidden space-y-6">
+            <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">🕒 Riwayat Baca Terakhir</h2>
+            <div id="historyContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div class="col-span-full text-center py-10 text-slate-500 text-sm">Belum ada riwayat baca.</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JavaScript Logika Aplikasi Lengkap -->
+    <script>
+        let currentMangaId = null;
+        let currentChaptersList = [];
+        let currentChapterIndex = 0;
+
+        function switchView(viewName) {
+            ['homeView', 'detailView', 'readerView', 'historyView'].forEach(v => {
+                document.getElementById(v).classList.add('hidden');
+            });
+            document.getElementById(viewName).classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            switchView('homeView');
+            loadPopularManga();
+            loadLatestManga();
+        }
+
+        // Load Beranda
+        async function loadPopularManga() {
+            try {
+                const res = await fetch('/api/manga/popular?page=1');
+                const json = await res.json();
+                const list = json.data?.mangas || [];
+                const container = document.getElementById('popularContainer');
+                container.innerHTML = '';
+                list.forEach(m => {
+                    container.innerHTML += createCard(m);
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadLatestManga() {
+            try {
+                const res = await fetch('/api/manga/latest?page=1');
+                const json = await res.json();
+                const list = json.data?.mangas || [];
+                const container = document.getElementById('latestContainer');
+                container.innerHTML = '';
+                list.forEach(m => {
+                    container.innerHTML += createCard(m);
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        function createCard(manga) {
+            const id = manga.url; 
+            return `
+                <div onclick="loadDetail('${id}')" class="min-w-[150px] sm:min-w-[180px] w-[150px] sm:w-[180px] bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl transition-all duration-300 flex flex-col snap-start group cursor-pointer">
+                    <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
+                        <img src="${manga.thumbnail || ''}" alt="${manga.title}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                    </div>
+                    <div class="p-3 flex flex-col flex-grow justify-between">
+                        <h3 class="text-xs sm:text-sm font-semibold line-clamp-2 text-slate-200 group-hover:text-amber-400 transition">${manga.title}</h3>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load Detail Manga & Chapters
+        async function loadDetail(mangaId) {
+            currentMangaId = mangaId;
+            switchView('detailView');
+            const container = document.getElementById('detailContent');
+            container.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 animate-pulse">Memuat detail manga...</div>';
+
+            try {
+                const res = await fetch(`/api/manga/${mangaId}`);
+                const json = await res.json();
+                const data = json.data || json;
+
+                // Ambil daftar chapters
+                const chapRes = await fetch(`/api/manga/${mangaId}/chapters`);
+                const chapJson = await chapRes.json();
+                currentChaptersList = chapJson.data?.chapters || chapJson.chapters || [];
+
+                container.innerHTML = `
+                    <div class="aspect-[3/4] rounded-xl overflow-hidden bg-slate-800 shadow-lg">
+                        <img src="${data.thumbnail || data.cover || ''}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="md:col-span-2 space-y-4">
+                        <h2 class="text-2xl font-black text-amber-400">${data.title || 'Judul Manga'}</h2>
+                        <p class="text-sm text-slate-300 leading-relaxed">${data.synopsis || data.description || 'Tidak ada sinopsis.'}</p>
+                        <div class="pt-4">
+                            <h3 class="text-md font-bold text-cyan-400 mb-3">Daftar Chapter (${currentChaptersList.length})</h3>
+                            <div class="max-h-96 overflow-y-auto space-y-2 pr-2 border border-slate-800 p-3 rounded-xl bg-slate-950/50">
+                                ${currentChaptersList.map((ch, idx) => `
+                                    <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-slate-900 hover:bg-slate-800 border border-slate-800 px-4 py-2.5 rounded-lg text-sm flex justify-between items-center transition">
+                                        <span class="font-medium text-slate-200">${ch.title || ch.chapterName || 'Chapter ' + (idx+1)}</span>
+                                        <span class="text-xs text-amber-400">Baca &rarr;</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p class="text-red-400 text-center col-span-full">Gagal memuat detail manga.</p>';
+            }
+        }
+
+        // Load Chapter Reader & Pages
+        async function loadChapterPages(index) {
+            currentChapterIndex = index;
+            const chapter = currentChaptersList[index];
+            const chapterId = chapter.url || chapter.chapterId;
+
+            switchView('readerView');
+            document.getElementById('readerTitle').innerText = chapter.title || chapter.chapterName;
+            
+            // Atur tombol navigasi Sebelumnya / Selanjutnya
+            document.getElementById('prevBtn').disabled = (index >= currentChaptersList.length - 1);
+            document.getElementById('nextBtn').disabled = (index <= 0);
+
+            const container = document.getElementById('pagesContainer');
+            container.innerHTML = '<div class="text-center py-20 text-slate-500 animate-pulse">Memitting halaman komik...</div>';
+
+            // Simpan ke Riwayat Baca (LocalStorage)
+            saveToHistory({
+                id: currentMangaId,
+                title: chapter.mangaTitle || document.querySelector('#detailContent h2')?.innerText || 'Manga',
+                thumbnail: document.querySelector('#detailContent img')?.src || '',
+                chapterTitle: chapter.title || chapter.chapterName,
+                chapterIndex: index
+            });
+
+            try {
+                const res = await fetch(`/api/manga/chapter/${chapterId}/pages`);
+                const json = await res.json();
+                const pages = json.data?.pages || json.pages || json;
+
+                container.innerHTML = '';
+                pages.forEach(pageUrl => {
+                    container.innerHTML += `<img src="${pageUrl}" class="w-full max-w-2xl object-contain rounded" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat+Gambar'">`;
+                });
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p class="text-red-400 text-center py-10">Gagal memuat halaman chapter.</p>';
+            }
+        }
+
+        function changeChapter(direction) {
+            // direction: -1 untuk next chapter (karena list biasanya terbalik), 1 untuk prev
+            const newIndex = currentChapterIndex - direction;
+            if (newIndex >= 0 && newIndex < currentChaptersList.length) {
+                loadChapterPages(newIndex);
+            }
+        }
+
+        function backToDetail() {
+            switchView('detailView');
+        }
+
+        // Fitur Riwayat Baca (LocalStorage)
+        function saveToHistory(item) {
+            let history = JSON.parse(localStorage.getItem('manga_history') || '[]');
+            history = history.filter(h => h.id !== item.id); // Hapus duplikat
+            history.unshift(item); // Taruh di urutan paling atas
+            if (history.length > 20) history.pop(); // Batasi max 20 riwayat
+            localStorage.setItem('manga_history', JSON.stringify(history));
+        }
+
+        function showHistory() {
+            switchView('historyView');
+            const history = JSON.parse(localStorage.getItem('manga_history') || '[]');
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+
+            if (history.length === 0) {
+                container.innerHTML = '<p class="col-span-full text-center text-slate-500 text-sm">Belum ada riwayat baca.</p>';
+                return;
+            }
+
+            history.forEach(h => {
+                container.innerHTML += `
+                    <div onclick="loadDetail('${h.id}')" class="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/50 cursor-pointer transition flex flex-col">
+                        <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
+                            <img src="${h.thumbnail}" class="object-cover w-full h-full">
+                        </div>
+                        <div class="p-3 flex flex-col flex-grow justify-between">
+                            <h3 class="text-xs font-semibold line-clamp-1 text-slate-200">${h.title}</h3>
+                            <span class="text-[10px] text-amber-400 mt-1">${h.chapterTitle}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function searchMangaAction() {
+            const query = document.getElementById('searchInput').value.trim();
+            if(!query) return alert('Masukkan judul manga!');
+            // Implementasi halaman pencarian sederhana atau langsung alihkan ke rute API search
+            window.location.href = `/api/manga/search?q=${encodeURIComponent(query)}&page=1`;
+        }
+
+        window.onload = () => {
+            goHome();
+        };
+    </script>
+</body>
+</html>
