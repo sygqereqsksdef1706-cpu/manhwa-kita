@@ -32,9 +32,8 @@
     <!-- Main App Container -->
     <main class="max-w-7xl mx-auto px-4 py-6">
         
-        <!-- VIEW 1: BERANDA & SEARCH -->
+        <!-- VIEW 1: BERANDA -->
         <div id="homeView" class="space-y-8">
-            <!-- Section Populer (Akan disembunyikan otomatis saat melakukan pencarian) -->
             <div id="popularSectionWrapper">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-base sm:text-lg font-bold text-amber-400 flex items-center gap-2">🔥 Manhwa Terpopuler</h2>
@@ -44,7 +43,6 @@
                 </div>
             </div>
 
-            <!-- Section Update Terbaru / Hasil Pencarian -->
             <div>
                 <h2 id="mainSectionTitle" class="text-base sm:text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">🆕 Update Terbaru</h2>
                 <div id="latestContainer" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
@@ -63,22 +61,20 @@
 
         <!-- VIEW 3: BACA CHAPTER -->
         <div id="readerView" class="hidden space-y-4">
-            <!-- Header Reader Minimalis -->
             <div class="flex items-center justify-between bg-slate-900/90 px-4 py-2.5 rounded-xl border border-slate-800/60 backdrop-blur text-xs">
                 <button onclick="backToDetail()" class="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg font-medium transition text-slate-300">&larr; Menu Chapter</button>
                 <span id="readerTitle" class="font-bold text-amber-400 truncate max-w-[180px] sm:max-w-md">Chapter ...</span>
             </div>
 
-            <!-- Konten Gambar Komik -->
             <div id="pagesContainer" class="flex flex-col items-center justify-center max-w-3xl mx-auto bg-black rounded-xl overflow-hidden min-h-[60vh]">
                 <div class="text-center py-20 text-slate-500 animate-pulse">Memuat halaman gambar...</div>
             </div>
 
-            <!-- Navigasi Bawah (Sudah Diperbaiki Urutannya: Sebelumnya & Selanjutnya) -->
+            <!-- Navigasi Bawah (Diperbaiki: Sebelumnya = chapter lama, Selanjutnya = chapter baru) -->
             <div class="flex items-center justify-between bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 max-w-3xl mx-auto">
-                <button id="prevBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3.5 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">← Sebelumnya</button>
+                <button id="prevBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3.5 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">← Sebelumnya</button>
                 <span id="readerChapterInfo" class="text-xs text-slate-400 font-medium">Navigasi</span>
-                <button id="nextBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3.5 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya →</button>
+                <button id="nextBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3.5 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya →</button>
             </div>
         </div>
 
@@ -108,7 +104,7 @@
 
         function goHome() {
             switchView('homeView');
-            document.getElementById('popularSectionWrapper').style.display = 'block'; // Tampilkan kembali bagian populer
+            document.getElementById('popularSectionWrapper').style.display = 'block';
             document.getElementById('mainSectionTitle').innerText = '🆕 Update Terbaru';
             document.getElementById('searchInput').value = '';
             loadPopularManga();
@@ -154,13 +150,12 @@
             `;
         }
 
-        // Fitur Search (Sembunyikan Populer & Tampilkan Grid Hasil Rapi)
         async function searchMangaAction() {
             const query = document.getElementById('searchInput').value.trim();
             if(!query) return alert('Masukkan judul manga yang ingin dicari!');
             
             switchView('homeView');
-            document.getElementById('popularSectionWrapper').style.display = 'none'; // Sembunyikan section populer saat search
+            document.getElementById('popularSectionWrapper').style.display = 'none';
             document.getElementById('mainSectionTitle').innerText = `🔍 Hasil Pencarian: "${query}"`;
             
             const container = document.getElementById('latestContainer');
@@ -196,7 +191,10 @@
 
                 const chapRes = await fetch(`/api/manga/${mangaId}/chapters`);
                 const chapJson = await chapRes.json();
-                currentChaptersList = chapJson.data?.chapters || chapJson.chapters || chapJson.data || [];
+                let rawChapters = chapJson.data?.chapters || chapJson.chapters || chapJson.data || [];
+                
+                // BALIK URUTAN CHAPTER: Supaya Chapter 1 berada di paling bawah (urutan kronologis benar)
+                currentChaptersList = rawChapters.reverse();
 
                 container.innerHTML = `
                     <div class="aspect-[3/4] rounded-xl overflow-hidden bg-slate-800 shadow-2xl border border-slate-700/50">
@@ -234,9 +232,10 @@
             switchView('readerView');
             document.getElementById('readerTitle').innerText = chapter.title || chapter.chapterName || `Chapter ${index+1}`;
             
-            // Perbaikan Logika Tombol Sebelumnya & Selanjutnya (index turun = chapter berikutnya secara kronologis)
-            document.getElementById('prevBtn').disabled = (index >= currentChaptersList.length - 1);
-            document.getElementById('nextBtn').disabled = (index <= 0);
+            // Logika tombol navigasi: Karena array sudah dibalik (Chapter 1 di index 0), 
+            // Sebelumnya (index berkurang) = Chapter lama, Selanjutnya (index bertambah) = Chapter baru.
+            document.getElementById('prevBtn').disabled = (index <= 0);
+            document.getElementById('nextBtn').disabled = (index >= currentChaptersList.length - 1);
 
             const container = document.getElementById('pagesContainer');
             container.innerHTML = '<div class="text-center py-20 text-slate-500 animate-pulse text-xs">Memuat halaman gambar...</div>';
@@ -271,7 +270,7 @@
         }
 
         function changeChapter(direction) {
-            // direction 1 = Tombol Sebelumnya (index bertambah/mundur ke chapter lama), direction -1 = Tombol Selanjutnya (index berkurang/maju ke chapter baru)
+            // direction -1 = Sebelumnya, direction 1 = Selanjutnya
             const newIndex = currentChapterIndex + direction;
             if (newIndex >= 0 && newIndex < currentChaptersList.length) {
                 loadChapterPages(newIndex);
@@ -322,3 +321,4 @@
     </script>
 </body>
 </html>
+
