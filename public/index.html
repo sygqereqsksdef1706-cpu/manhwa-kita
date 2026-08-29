@@ -35,7 +35,7 @@
 <body class="selection:bg-accent selection:text-black">
 
     <!-- Navbar -->
-    <header class="fixed top-0 w-full z-50 bg-darkbg/90 backdrop-blur-md border-b border-white/5 shadow-2xl">
+    <header class="fixed top-0 w-full z-50 bg-darkbg/95 backdrop-blur-md border-b border-white/5 shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
             <h1 onclick="goHome()" class="text-2xl font-black tracking-wider text-white flex items-center gap-2 cursor-pointer group">
                 <span class="text-accent text-3xl group-hover:rotate-12 transition-transform">⚡</span> MANHWA<span class="text-white/40 font-light">-KITA</span>
@@ -45,18 +45,18 @@
                 <button onclick="showHistory()" class="text-white/60 hover:text-white transition flex items-center gap-1.5">🕒 Riwayat</button>
             </nav>
             <div class="w-full md:w-72 flex gap-2">
-                <input type="text" id="searchInput" placeholder="Cari judul komik..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent text-white placeholder-white/40 transition-all shadow-inner" onkeypress="if(event.key==='Enter') searchMangaAction()">
+                <input type="text" id="searchInput" placeholder="Cari manhwa..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent text-white placeholder-white/40 transition-all shadow-inner" onkeypress="if(event.key==='Enter') searchMangaAction()">
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="w-full pt-28 pb-16 min-h-screen max-w-7xl mx-auto px-4">
+    <!-- Main Container dengan padding-top yang aman agar banner tidak menabrak search bar -->
+    <main class="w-full pt-36 pb-16 min-h-screen max-w-7xl mx-auto px-4">
         
         <!-- VIEW 1: BERANDA -->
         <div id="homeView" class="space-y-10">
             
-            <!-- HERO BANNER TEGAS & BERKELAS -->
+            <!-- HERO BANNER BERJARAK AMAN -->
             <div id="heroBanner" class="relative bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 rounded-2xl p-6 sm:p-8 overflow-hidden shadow-[0_10px_30px_rgba(245,158,11,0.2)] border border-white/10">
                 <div class="relative z-10 w-full md:w-3/4 space-y-3">
                     <span class="bg-black/40 text-amber-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-md backdrop-blur-sm border border-amber-400/30">Platform Komik Unggulan</span>
@@ -70,7 +70,7 @@
                 <div class="absolute right-[-20px] bottom-[-40px] opacity-15 transform -rotate-12 text-[14rem] select-none pointer-events-none font-black">⚡</div>
             </div>
 
-            <!-- SECTION POPULER (Dengan Penegasan Garis Kiri) -->
+            <!-- SECTION POPULER -->
             <div id="popularSectionWrapper">
                 <div class="flex items-center justify-between mb-4 border-l-4 border-accent pl-3">
                     <h2 class="text-lg sm:text-xl font-black text-white tracking-wide flex items-center gap-2">🔥 SEDANG HANGAT</h2>
@@ -80,10 +80,12 @@
                 </div>
             </div>
 
-            <!-- SECTION TERBARU (Dengan Penegasan Garis Kiri) -->
+            <!-- SECTION TERBARU (Menggunakan Badge CSS Clean, Tanpa Emoji Rusak) -->
             <div>
                 <div class="flex items-center justify-between mb-4 border-l-4 border-cyan-400 pl-3">
-                    <h2 id="mainSectionTitle" class="text-lg sm:text-xl font-black text-white tracking-wide flex items-center gap-2">🆕 UPDATE TERBARU</h2>
+                    <h2 id="mainSectionTitle" class="text-lg sm:text-xl font-black text-white tracking-wide flex items-center gap-2">
+                        <span class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-[11px] font-extrabold px-2 py-0.5 rounded tracking-wider uppercase">NEW</span> UPDATE TERBARU
+                    </h2>
                 </div>
                 <div id="latestContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-5">
                     <div class="col-span-full text-center py-12 text-white/40 text-xs animate-pulse">Mengambil update terbaru...</div>
@@ -172,7 +174,7 @@
             switchView('homeView');
             document.getElementById('heroBanner').style.display = 'block';
             document.getElementById('popularSectionWrapper').style.display = 'block';
-            document.getElementById('mainSectionTitle').innerHTML = '🆕 UPDATE TERBARU';
+            document.getElementById('mainSectionTitle').innerHTML = '<span class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-[11px] font-extrabold px-2 py-0.5 rounded tracking-wider uppercase">NEW</span> UPDATE TERBARU';
             document.getElementById('searchInput').value = '';
             loadPopularManga();
             loadLatestManga();
@@ -429,4 +431,3 @@
     </script>
 </body>
 </html>
-
