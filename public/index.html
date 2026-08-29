@@ -13,7 +13,7 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-amber-500 selection:text-slate-950">
 
     <!-- Header / Navbar -->
-    <header class="border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+    <header class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <h1 onclick="goHome()" class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 flex items-center gap-2 cursor-pointer">
                 ⚡ MANHWA <span class="text-white font-light">-KITA</span>
@@ -44,7 +44,7 @@
             </section>
 
             <section>
-                <h2 class="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">🆕 Update Terbaru</h2>
+                <h2 id="mainSectionTitle" class="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">🆕 Update Terbaru</h2>
                 <div id="latestContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     <div class="col-span-full text-center py-10 text-slate-500 text-sm animate-pulse">Memuat update terbaru...</div>
                 </div>
@@ -59,18 +59,24 @@
             </div>
         </div>
 
-        <!-- VIEW 3: BACA CHAPTER -->
+        <!-- VIEW 3: BACA CHAPTER (Reader Bersih, Tombol di Bawah & Atas yang Minimalis) -->
         <div id="readerView" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row items-center justify-between bg-slate-900/90 p-4 rounded-xl border border-slate-800 sticky top-20 z-40 backdrop-blur shadow-lg gap-3">
-                <button onclick="backToDetail()" class="w-full sm:w-auto text-xs sm:text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-medium transition text-center">&larr; Daftar Chapter</button>
-                <h2 id="readerTitle" class="text-xs sm:text-sm font-bold text-amber-400 truncate max-w-xs text-center">Chapter ...</h2>
-                <div class="flex gap-2 w-full sm:w-auto justify-center">
-                    <button id="prevBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">← Sebelumnya</button>
-                    <button id="nextBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya →</button>
-                </div>
+            <!-- Tombol Atas Minimalis -->
+            <div class="flex items-center justify-between bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-800/60 backdrop-blur text-xs">
+                <button onclick="backToDetail()" class="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg font-medium transition text-slate-300">&larr; Menu Chapter</button>
+                <span id="readerTitle" class="font-bold text-amber-400 truncate max-w-[200px] sm:max-w-md">Chapter ...</span>
             </div>
-            <div id="pagesContainer" class="flex flex-col items-center justify-center max-w-3xl mx-auto space-y-1 bg-black p-2 rounded-2xl border border-slate-900 min-h-[60vh]">
+
+            <!-- Konten Gambar Komik -->
+            <div id="pagesContainer" class="flex flex-col items-center justify-center max-w-3xl mx-auto bg-black rounded-xl overflow-hidden min-h-[60vh]">
                 <div class="text-center py-20 text-slate-500 animate-pulse">Memuat halaman gambar...</div>
+            </div>
+
+            <!-- Navigasi Bawah (Lebih Nyaman untuk Pindah Chapter) -->
+            <div class="flex items-center justify-between bg-slate-900/90 p-4 rounded-xl border border-slate-800 max-w-3xl mx-auto">
+                <button id="prevBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">← Sebelumnya</button>
+                <span id="readerChapterInfo" class="text-xs text-slate-400">Navigasi Chapter</span>
+                <button id="nextBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya →</button>
             </div>
         </div>
 
@@ -100,6 +106,7 @@
 
         function goHome() {
             switchView('homeView');
+            document.getElementById('mainSectionTitle').innerText = '🆕 Update Terbaru';
             loadPopularManga();
             loadLatestManga();
         }
@@ -131,15 +138,44 @@
         function createCard(manga) {
             const id = manga.url; 
             return `
-                <div onclick="loadDetail('${id}')" class="min-w-[150px] sm:min-w-[180px] w-[150px] sm:w-[180px] bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col snap-start group cursor-pointer">
+                <div onclick="loadDetail('${id}')" class="min-w-[150px] sm:min-w-[170px] w-[150px] sm:w-[170px] bg-slate-900/80 border border-slate-800/80 rounded-xl overflow-hidden hover:border-amber-500/50 hover:shadow-lg transition-all duration-300 flex flex-col snap-start group cursor-pointer">
                     <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
                         <img src="${manga.thumbnail || ''}" alt="${manga.title}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
                     </div>
-                    <div class="p-3 flex flex-col flex-grow justify-between">
+                    <div class="p-2.5 flex flex-col flex-grow justify-between">
                         <h3 class="text-xs sm:text-sm font-semibold line-clamp-2 text-slate-200 group-hover:text-amber-400 transition">${manga.title}</h3>
                     </div>
                 </div>
             `;
+        }
+
+        // Fitur Search Fix (Menampilkan hasil dalam grid rapi, bukan JSON mentah)
+        async function searchMangaAction() {
+            const query = document.getElementById('searchInput').value.trim();
+            if(!query) return alert('Masukkan judul manga yang ingin dicari!');
+            
+            switchView('homeView');
+            document.getElementById('popularSection')?.remove(); // Sembunyikan populer saat cari
+            document.getElementById('mainSectionTitle').innerText = `🔍 Hasil Pencarian: "${query}"`;
+            
+            const container = document.getElementById('latestContainer');
+            container.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 animate-pulse">Mencari manga...</div>';
+
+            try {
+                const res = await fetch(`/api/manga/search?q=${encodeURIComponent(query)}&page=1`);
+                const json = await res.json();
+                const list = json.data?.mangas || json.data || [];
+                
+                container.innerHTML = '';
+                if(list.length === 0) {
+                    container.innerHTML = '<p class="col-span-full text-center text-red-400 py-10">Manga tidak ditemukan.</p>';
+                    return;
+                }
+                list.forEach(m => { container.innerHTML += createCard(m); });
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p class="col-span-full text-center text-red-400 py-10">Gagal melakukan pencarian.</p>';
+            }
         }
 
         async function loadDetail(mangaId) {
@@ -193,7 +229,7 @@
             switchView('readerView');
             document.getElementById('readerTitle').innerText = chapter.title || chapter.chapterName || `Chapter ${index+1}`;
             
-            // Atur tombol Sebelumnya & Selanjutnya (List biasanya urut dari chapter terbaru ke terlama)
+            // Perbaikan Logika Tombol Sebelumnya & Selanjutnya yang benar
             document.getElementById('prevBtn').disabled = (index >= currentChaptersList.length - 1);
             document.getElementById('nextBtn').disabled = (index <= 0);
 
@@ -221,7 +257,7 @@
 
                 pages.forEach(page => {
                     const pageUrl = typeof page === 'string' ? page : (page.url || page.imageUrl || page);
-                    container.innerHTML += `<img src="${pageUrl}" class="w-full max-w-2xl object-contain rounded mb-1" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat+Gambar'">`;
+                    container.innerHTML += `<img src="${pageUrl}" class="w-full max-w-2xl object-contain block mx-auto" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat+Gambar'">`;
                 });
             } catch (err) {
                 console.error(err);
@@ -272,12 +308,6 @@
                     </div>
                 `;
             });
-        }
-
-        function searchMangaAction() {
-            const query = document.getElementById('searchInput').value.trim();
-            if(!query) return alert('Masukkan judul manga yang ingin dicari!');
-            window.location.href = `/api/manga/search?q=${encodeURIComponent(query)}&page=1`;
         }
 
         window.onload = () => {
