@@ -2,11 +2,11 @@
   "name": "shinigami-rest-api",
   "version": "1.0.0",
   "description": "REST API for Shinigami manga scraper",
-  "main": "dist/server.js",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.ts",
+    "dev": "nodemon src/app.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/app.js",
     "test": "ts-node test-api.ts",
     "lint": "eslint . --ext .ts"
   },
