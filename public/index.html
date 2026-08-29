@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MANHWA-KITA - Premium Reader</title>
-    <!-- Tailwind CSS CDN -->
+    <title>MANHWA-KITA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -62,12 +61,12 @@
 
         <!-- VIEW 3: BACA CHAPTER -->
         <div id="readerView" class="hidden space-y-6">
-            <div class="flex items-center justify-between bg-slate-900/90 p-4 rounded-xl border border-slate-800 sticky top-20 z-40 backdrop-blur shadow-lg">
-                <button onclick="backToDetail()" class="text-xs sm:text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-medium transition">&larr; Daftar Chapter</button>
-                <h2 id="readerTitle" class="text-xs sm:text-sm font-bold text-amber-400 truncate max-w-[150px] sm:max-w-md">Chapter ...</h2>
-                <div class="flex gap-2">
-                    <button id="prevBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold transition disabled:opacity-30">Sebelumnya</button>
-                    <button id="nextBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya</button>
+            <div class="flex flex-col sm:flex-row items-center justify-between bg-slate-900/90 p-4 rounded-xl border border-slate-800 sticky top-20 z-40 backdrop-blur shadow-lg gap-3">
+                <button onclick="backToDetail()" class="w-full sm:w-auto text-xs sm:text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-medium transition text-center">&larr; Daftar Chapter</button>
+                <h2 id="readerTitle" class="text-xs sm:text-sm font-bold text-amber-400 truncate max-w-xs text-center">Chapter ...</h2>
+                <div class="flex gap-2 w-full sm:w-auto justify-center">
+                    <button id="prevBtn" onclick="changeChapter(1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">← Sebelumnya</button>
+                    <button id="nextBtn" onclick="changeChapter(-1)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-30">Selanjutnya →</button>
                 </div>
             </div>
             <div id="pagesContainer" class="flex flex-col items-center justify-center max-w-3xl mx-auto space-y-1 bg-black p-2 rounded-2xl border border-slate-900 min-h-[60vh]">
@@ -85,7 +84,7 @@
 
     </main>
 
-    <!-- JavaScript Logika Aplikasi Lengkap -->
+    <!-- JavaScript Logika Aplikasi -->
     <script>
         let currentMangaId = null;
         let currentChaptersList = [];
@@ -143,7 +142,6 @@
             `;
         }
 
-        // Load Detail Manga & Chapters
         async function loadDetail(mangaId) {
             currentMangaId = mangaId;
             switchView('detailView');
@@ -155,11 +153,8 @@
                 const json = await res.json();
                 const data = json.data || json;
 
-                // Ambil daftar chapters dengan aman
                 const chapRes = await fetch(`/api/manga/${mangaId}/chapters`);
                 const chapJson = await chapRes.json();
-                
-                // Menyesuaikan struktur data chapters dari backend kamu
                 currentChaptersList = chapJson.data?.chapters || chapJson.chapters || chapJson.data || [];
 
                 container.innerHTML = `
@@ -188,7 +183,6 @@
             }
         }
 
-        // Load Chapter Reader & Pages
         async function loadChapterPages(index) {
             currentChapterIndex = index;
             const chapter = currentChaptersList[index];
@@ -199,6 +193,7 @@
             switchView('readerView');
             document.getElementById('readerTitle').innerText = chapter.title || chapter.chapterName || `Chapter ${index+1}`;
             
+            // Atur tombol Sebelumnya & Selanjutnya (List biasanya urut dari chapter terbaru ke terlama)
             document.getElementById('prevBtn').disabled = (index >= currentChaptersList.length - 1);
             document.getElementById('nextBtn').disabled = (index <= 0);
 
@@ -216,7 +211,7 @@
             try {
                 const res = await fetch(`/api/manga/chapter/${chapterId}/pages`);
                 const json = await res.json();
-                const pages = json.data?.pages || json.pages || json;
+                const pages = json.data?.pages || json.pages || json.data || json;
 
                 container.innerHTML = '';
                 if (!pages || pages.length === 0) {
@@ -224,8 +219,9 @@
                     return;
                 }
 
-                pages.forEach(pageUrl => {
-                    container.innerHTML += `<img src="${pageUrl}" class="w-full max-w-2xl object-contain rounded" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat+Gambar'">`;
+                pages.forEach(page => {
+                    const pageUrl = typeof page === 'string' ? page : (page.url || page.imageUrl || page);
+                    container.innerHTML += `<img src="${pageUrl}" class="w-full max-w-2xl object-contain rounded mb-1" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat+Gambar'">`;
                 });
             } catch (err) {
                 console.error(err);
@@ -234,7 +230,7 @@
         }
 
         function changeChapter(direction) {
-            const newIndex = currentChapterIndex - direction;
+            const newIndex = currentChapterIndex + direction;
             if (newIndex >= 0 && newIndex < currentChaptersList.length) {
                 loadChapterPages(newIndex);
             }
