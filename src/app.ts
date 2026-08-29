@@ -1,6 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path"; // 1. Import path untuk membaca direktori file
 import routes from "./routes";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 
@@ -23,24 +24,9 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 // API routes
 app.use("/api", routes);
 
-// Root route
+// Root route - Render index.html frontend secara langsung
 app.get("/", (_req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Welcome to Shinigami REST API",
-    version: "1.0.0",
-    documentation: "https://github.com/VernSG/shinigami-rest-api",
-    endpoints: {
-      health: "/api/health",
-      popular: "/api/manga/popular?page=1",
-      latest: "/api/manga/latest?page=1",
-      search: "/api/manga/search?q=query&page=1",
-      details: "/api/manga/:mangaId",
-      chapters: "/api/manga/:mangaId/chapters",
-      pages: "/api/manga/chapter/:chapterId/pages",
-      image: "/api/manga/image?url=imageUrl",
-    },
-  });
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
 // 404 handler
