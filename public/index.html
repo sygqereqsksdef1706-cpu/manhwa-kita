@@ -6,7 +6,7 @@
     <title>MANHWA-KITA - Baca Komik Premium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,10 +14,10 @@
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        darkbg: '#0a0d14',
-                        cardbg: '#121622',
-                        accent: '#FFB800',
-                        brandbtn: '#5b56f5' /* Warna ungu kebiruan untuk tombol Lanjut Baca */
+                        darkbg: '#07090E',
+                        cardbg: '#111522',
+                        accent: '#F59E0B',
+                        brandbtn: '#6366F1'
                     }
                 }
             }
@@ -26,7 +26,7 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        body { background-color: #0a0d14; color: #E2E8F0; }
+        body { background-color: #07090E; color: #F1F5F9; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -35,80 +35,81 @@
 <body class="selection:bg-accent selection:text-black">
 
     <!-- Navbar -->
-    <header class="fixed top-0 w-full z-50 bg-darkbg/85 backdrop-blur-xl border-b border-white/5 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <h1 onclick="goHome()" class="text-2xl font-black tracking-tight text-white flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
-                <span class="text-accent text-3xl">⚡</span> MANHWA<span class="text-white/40 font-light">-KITA</span>
+    <header class="fixed top-0 w-full z-50 bg-darkbg/90 backdrop-blur-md border-b border-white/5 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
+            <h1 onclick="goHome()" class="text-2xl font-black tracking-wider text-white flex items-center gap-2 cursor-pointer group">
+                <span class="text-accent text-3xl group-hover:rotate-12 transition-transform">⚡</span> MANHWA<span class="text-white/40 font-light">-KITA</span>
             </h1>
-            <nav class="flex items-center gap-6 sm:gap-8 text-sm font-medium">
-                <button onclick="goHome()" class="text-white hover:text-accent transition">🏠 Beranda</button>
-                <button onclick="showHistory()" class="text-white/60 hover:text-white transition">🕒 Riwayat Baca</button>
+            <nav class="flex items-center gap-6 text-sm font-semibold">
+                <button onclick="goHome()" class="text-white hover:text-accent transition flex items-center gap-1.5">🏠 Beranda</button>
+                <button onclick="showHistory()" class="text-white/60 hover:text-white transition flex items-center gap-1.5">🕒 Riwayat</button>
             </nav>
             <div class="w-full md:w-72 flex gap-2">
-                <input type="text" id="searchInput" placeholder="Cari manhwa..." class="w-full bg-white/5 border border-white/10 rounded-full px-5 py-2 text-sm focus:outline-none focus:border-accent text-white placeholder-white/40 transition-all" onkeypress="if(event.key==='Enter') searchMangaAction()">
+                <input type="text" id="searchInput" placeholder="Cari judul komik..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent text-white placeholder-white/40 transition-all shadow-inner" onkeypress="if(event.key==='Enter') searchMangaAction()">
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="w-full pt-32 pb-10 min-h-screen max-w-7xl mx-auto px-4">
+    <main class="w-full pt-28 pb-16 min-h-screen max-w-7xl mx-auto px-4">
         
         <!-- VIEW 1: BERANDA -->
         <div id="homeView" class="space-y-10">
             
-            <!-- HERO BANNER: JATI DIRI MANHWA-KITA -->
-            <div id="heroBanner" class="relative bg-gradient-to-br from-amber-500 via-orange-600 to-red-600 rounded-3xl p-8 sm:p-10 overflow-hidden shadow-2xl shadow-orange-500/20">
-                <div class="relative z-10 w-full md:w-2/3 space-y-4">
-                    <span class="bg-black/30 text-white px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full backdrop-blur-md">Pusat Bacaan #1</span>
-                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
-                        Eksplorasi Dunia <br> <span class="text-black">Tanpa Batas.</span>
+            <!-- HERO BANNER TEGAS & BERKELAS -->
+            <div id="heroBanner" class="relative bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 rounded-2xl p-6 sm:p-8 overflow-hidden shadow-[0_10px_30px_rgba(245,158,11,0.2)] border border-white/10">
+                <div class="relative z-10 w-full md:w-3/4 space-y-3">
+                    <span class="bg-black/40 text-amber-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-md backdrop-blur-sm border border-amber-400/30">Platform Komik Unggulan</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+                        BACA MANHWA FAVORIT <br><span class="text-black drop-shadow-sm">TANPA BATASAN.</span>
                     </h2>
-                    <p class="text-white/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">
-                        Selamat datang di <b>MANHWA-KITA</b>! Nikmati ribuan chapter terbaru dengan kualitas gambar terbaik, server super cepat, dan tanpa iklan pop-up yang mengganggu.
+                    <p class="text-white/90 text-xs sm:text-sm font-medium leading-relaxed max-w-xl">
+                        Pembaruan chapter tercepat dengan server stabil, navigasi mulus, dan perpustakaan komik terlengkap hanya di MANHWA-KITA.
                     </p>
                 </div>
-                <!-- Dekorasi -->
-                <div class="absolute -right-4 -bottom-10 opacity-20 transform rotate-12 text-[15rem] select-none pointer-events-none">⚡</div>
+                <div class="absolute right-[-20px] bottom-[-40px] opacity-15 transform -rotate-12 text-[14rem] select-none pointer-events-none font-black">⚡</div>
             </div>
 
-            <!-- POPULER -->
+            <!-- SECTION POPULER (Dengan Penegasan Garis Kiri) -->
             <div id="popularSectionWrapper">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span class="text-accent">🔥</span> Sedang Hangat</h2>
+                <div class="flex items-center justify-between mb-4 border-l-4 border-accent pl-3">
+                    <h2 class="text-lg sm:text-xl font-black text-white tracking-wide flex items-center gap-2">🔥 SEDANG HANGAT</h2>
                 </div>
-                <div id="popularContainer" class="flex gap-4 overflow-x-auto no-scrollbar pb-4 snap-x">
-                    <div class="w-full text-center py-10 text-white/40 animate-pulse text-sm">Membangunkan data...</div>
+                <div id="popularContainer" class="flex gap-4 overflow-x-auto no-scrollbar pb-3 snap-x">
+                    <div class="w-full text-center py-8 text-white/40 text-xs animate-pulse">Memuat komik populer...</div>
                 </div>
             </div>
 
-            <!-- TERBARU / HASIL PENCARIAN -->
+            <!-- SECTION TERBARU (Dengan Penegasan Garis Kiri) -->
             <div>
-                <h2 id="mainSectionTitle" class="text-xl font-bold text-white mb-4 flex items-center gap-2"><span class="text-cyan-400">🆕</span> Update Terbaru</h2>
-                <div id="latestContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-                    <div class="col-span-full text-center py-10 text-white/40 animate-pulse text-sm">Mengambil update...</div>
+                <div class="flex items-center justify-between mb-4 border-l-4 border-cyan-400 pl-3">
+                    <h2 id="mainSectionTitle" class="text-lg sm:text-xl font-black text-white tracking-wide flex items-center gap-2">🆕 UPDATE TERBARU</h2>
+                </div>
+                <div id="latestContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-5">
+                    <div class="col-span-full text-center py-12 text-white/40 text-xs animate-pulse">Mengambil update terbaru...</div>
                 </div>
             </div>
         </div>
 
         <!-- VIEW 2: DETAIL MANHWA -->
         <div id="detailView" class="hidden">
-            <button onclick="goHome()" class="mb-6 text-sm text-white/60 hover:text-accent flex items-center gap-2 font-medium transition">&larr; Kembali</button>
-            <div class="flex flex-col md:flex-row gap-8 bg-cardbg/80 border border-white/5 p-6 sm:p-8 rounded-3xl shadow-xl">
-                <div class="flex-shrink-0 w-48 sm:w-56 mx-auto md:mx-0">
-                    <img id="detailCover" src="" class="w-full aspect-[3/4] object-cover rounded-2xl shadow-lg border border-white/10">
+            <button onclick="goHome()" class="mb-6 text-sm text-white/60 hover:text-accent flex items-center gap-2 font-bold transition">&larr; KEMBALI KE BERANDA</button>
+            <div class="flex flex-col md:flex-row gap-8 bg-cardbg border border-white/10 p-6 sm:p-8 rounded-2xl shadow-2xl">
+                <div class="flex-shrink-0 w-44 sm:w-52 mx-auto md:mx-0">
+                    <img id="detailCover" src="" class="w-full aspect-[3/4] object-cover rounded-xl shadow-xl border border-white/10">
                 </div>
                 <div class="flex-grow flex flex-col justify-center">
-                    <h2 id="detailTitle" class="text-3xl font-black text-white leading-tight mb-3">Judul Komik</h2>
+                    <h2 id="detailTitle" class="text-2xl sm:text-3xl font-black text-white leading-tight mb-3">Judul Komik</h2>
                     
                     <div class="relative mb-6">
-                        <p id="detailSynopsis" class="text-white/60 text-sm leading-relaxed line-clamp-3 transition-all duration-300"></p>
-                        <button id="synopsisToggleBtn" onclick="toggleSynopsis()" class="text-accent text-sm font-bold mt-2 hover:underline hidden">Baca Selengkapnya ▾</button>
+                        <p id="detailSynopsis" class="text-white/70 text-xs sm:text-sm leading-relaxed line-clamp-3 transition-all duration-300"></p>
+                        <button id="synopsisToggleBtn" onclick="toggleSynopsis()" class="text-accent text-xs font-bold mt-2 hover:underline hidden">Baca Selengkapnya ▾</button>
                     </div>
                     
                     <div class="w-full h-px bg-white/10 mb-6"></div>
                     
-                    <h3 class="text-base font-bold text-white mb-3">Daftar Chapter <span id="chapterCount" class="text-white/40 font-normal"></span></h3>
-                    <div id="chapterListContainer" class="max-h-[350px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                    <h3 class="text-sm font-black text-white uppercase tracking-wider mb-3 flex items-center gap-2">📖 DAFTAR CHAPTER <span id="chapterCount" class="text-accent text-xs font-normal"></span></h3>
+                    <div id="chapterListContainer" class="max-h-[320px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                         <!-- List chapter -->
                     </div>
                 </div>
@@ -116,38 +117,37 @@
         </div>
 
         <!-- VIEW 3: BACA CHAPTER -->
-        <div id="readerView" class="hidden relative space-y-6">
-            <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg px-5 py-3 rounded-2xl border border-white/5 shadow-lg">
-                <button onclick="backToDetail()" class="text-white/60 hover:text-white text-xs sm:text-sm font-medium transition">&larr; Menu</button>
-                <span id="readerTitle" class="font-bold text-accent truncate px-2 max-w-[60%] text-sm">Chapter ...</span>
+        <div id="readerView" class="hidden relative space-y-4">
+            <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg px-4 py-3 rounded-xl border border-white/10 shadow-lg">
+                <button onclick="backToDetail()" class="text-white/60 hover:text-white text-xs font-bold transition">&larr; MENU CHAPTER</button>
+                <span id="readerTitle" class="font-bold text-accent truncate px-2 max-w-[60%] text-xs sm:text-sm">Chapter ...</span>
                 <span class="w-10"></span>
             </div>
 
-            <div id="pagesContainer" class="flex flex-col items-center justify-center w-full bg-black rounded-2xl overflow-hidden min-h-[60vh]">
-                <div class="py-20 text-white/40 animate-pulse text-sm">Menyiapkan halaman...</div>
+            <div id="pagesContainer" class="flex flex-col items-center justify-center w-full bg-black rounded-xl overflow-hidden min-h-[60vh] border border-white/5">
+                <div class="py-20 text-white/40 text-xs animate-pulse">Menyiapkan panel gambar...</div>
             </div>
 
-            <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg p-4 rounded-2xl border border-white/5 shadow-lg">
+            <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg p-3.5 rounded-xl border border-white/10 shadow-lg">
                 <button id="prevBtn" onclick="changeChapter(-1)" class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-20 flex items-center gap-2">
                     &larr; Sebelumnya
                 </button>
-                <span class="text-[10px] sm:text-xs font-bold text-white/30 uppercase tracking-widest">Navigasi</span>
+                <span class="text-[10px] font-black text-white/40 uppercase tracking-widest">NAVIGASI</span>
                 <button id="nextBtn" onclick="changeChapter(1)" class="bg-accent hover:bg-yellow-400 text-black px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-20 flex items-center gap-2">
                     Selanjutnya &rarr;
                 </button>
             </div>
         </div>
 
-        <!-- VIEW 4: RIWAYAT BACA (DESAIN LIST SESUAI REQUEST) -->
+        <!-- VIEW 4: RIWAYAT BACA -->
         <div id="historyView" class="hidden space-y-6 max-w-4xl mx-auto">
             <div class="flex items-center justify-between border-l-4 border-brandbtn pl-3">
-                <h2 class="text-xl font-bold text-white flex items-center gap-2">⏱ Riwayat Baca Terakhir</h2>
-                <button onclick="clearHistory()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition shadow-lg shadow-red-500/20">
-                    🗑 Bersihkan Riwayat
+                <h2 class="text-lg font-black text-white uppercase tracking-wide">⏱ RIWAYAT BACA TERAKHIR</h2>
+                <button onclick="clearHistory()" class="bg-red-500 hover:bg-red-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition shadow-lg shadow-red-500/20">
+                    🗑 BERSIHKAN
                 </button>
             </div>
-            
-            <div id="historyContainer" class="flex flex-col gap-4">
+            <div id="historyContainer" class="flex flex-col gap-3">
                 <!-- Diisi via JS -->
             </div>
         </div>
@@ -172,21 +172,21 @@
             switchView('homeView');
             document.getElementById('heroBanner').style.display = 'block';
             document.getElementById('popularSectionWrapper').style.display = 'block';
-            document.getElementById('mainSectionTitle').innerHTML = '<span class="text-cyan-400">🆕</span> Update Terbaru';
+            document.getElementById('mainSectionTitle').innerHTML = '🆕 UPDATE TERBARU';
             document.getElementById('searchInput').value = '';
             loadPopularManga();
             loadLatestManga();
         }
 
         function createCard(manga, isPopular = false) {
-            const widthClass = isPopular ? 'min-w-[140px] sm:min-w-[160px] snap-start' : 'w-full';
+            const widthClass = isPopular ? 'min-w-[130px] sm:min-w-[150px] snap-start' : 'w-full';
             return `
-                <div onclick="loadDetail('${manga.url}')" class="${widthClass} bg-cardbg rounded-xl overflow-hidden hover:ring-2 hover:ring-accent transition-all duration-300 cursor-pointer group shadow-lg">
+                <div onclick="loadDetail('${manga.url}')" class="${widthClass} bg-cardbg rounded-xl overflow-hidden border border-white/5 hover:border-accent hover:shadow-[0_8px_20px_rgba(245,158,11,0.15)] transition-all duration-300 cursor-pointer group flex flex-col">
                     <div class="aspect-[3/4] relative bg-white/5">
                         <img src="${manga.thumbnail || ''}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80"></div>
                         <div class="absolute bottom-2 left-2 right-2">
-                            <h3 class="text-xs sm:text-sm font-bold text-white group-hover:text-accent line-clamp-2 leading-tight">${manga.title}</h3>
+                            <h3 class="text-xs font-bold text-white group-hover:text-accent line-clamp-2 leading-tight">${manga.title}</h3>
                         </div>
                     </div>
                 </div>
@@ -197,9 +197,9 @@
             try {
                 const res = await fetch('/api/manga/popular?page=1');
                 const json = await res.json();
-                const list = json.data?.mangas || [];
+                const list = json.data?.mangas || json.data || [];
                 const container = document.getElementById('popularContainer');
-                if(list.length === 0) return container.innerHTML = '<p class="text-white/40 text-sm">Tidak ada data.</p>';
+                if(list.length === 0) return container.innerHTML = '<p class="text-white/40 text-xs">Tidak ada data.</p>';
                 container.innerHTML = list.map(m => createCard(m, true)).join('');
             } catch (e) { console.error(e); }
         }
@@ -208,9 +208,9 @@
             try {
                 const res = await fetch('/api/manga/latest?page=1');
                 const json = await res.json();
-                const list = json.data?.mangas || [];
+                const list = json.data?.mangas || json.data || [];
                 const container = document.getElementById('latestContainer');
-                if(list.length === 0) return container.innerHTML = '<p class="col-span-full text-white/40 text-sm">Tidak ada data.</p>';
+                if(list.length === 0) return container.innerHTML = '<p class="col-span-full text-white/40 text-xs">Tidak ada data.</p>';
                 container.innerHTML = list.map(m => createCard(m, false)).join('');
             } catch (e) { console.error(e); }
         }
@@ -220,12 +220,12 @@
             if(!query) return;
             
             switchView('homeView');
-            document.getElementById('heroBanner').style.display = 'none'; // Sembunyikan banner saat cari
+            document.getElementById('heroBanner').style.display = 'none';
             document.getElementById('popularSectionWrapper').style.display = 'none';
-            document.getElementById('mainSectionTitle').innerHTML = `🔍 Pencarian: <span class="text-white">"${query}"</span>`;
+            document.getElementById('mainSectionTitle').innerHTML = `🔍 HASIL PENCARIAN: <span class="text-accent">"${query}"</span>`;
             
             const container = document.getElementById('latestContainer');
-            container.innerHTML = '<div class="col-span-full text-center py-20 text-white/40 text-sm animate-pulse">Mencari manga...</div>';
+            container.innerHTML = '<div class="col-span-full text-center py-16 text-white/40 text-xs animate-pulse">Mencari manhwa...</div>';
 
             try {
                 const res = await fetch(`/api/manga/search?q=${encodeURIComponent(query)}&page=1`);
@@ -233,12 +233,12 @@
                 const list = json.data?.mangas || json.data || [];
                 
                 if(list.length === 0) {
-                    container.innerHTML = '<p class="col-span-full text-center py-20 text-white/50 text-sm">Manga tidak ditemukan.</p>';
+                    container.innerHTML = '<p class="col-span-full text-center py-16 text-white/50 text-xs font-semibold">Manga tidak ditemukan.</p>';
                     return;
                 }
                 container.innerHTML = list.map(m => createCard(m, false)).join('');
             } catch (err) {
-                container.innerHTML = '<p class="col-span-full text-center py-20 text-red-400 text-sm">Gagal mencari data.</p>';
+                container.innerHTML = '<p class="col-span-full text-center py-16 text-red-400 text-xs">Gagal mencari data.</p>';
             }
         }
 
@@ -261,19 +261,29 @@
             document.getElementById('detailTitle').innerText = 'Memuat...';
             document.getElementById('detailSynopsis').innerText = '';
             document.getElementById('synopsisToggleBtn').classList.add('hidden');
-            document.getElementById('chapterListContainer').innerHTML = '<div class="text-center py-10 text-white/40 text-sm animate-pulse">Memuat daftar chapter...</div>';
+            document.getElementById('chapterListContainer').innerHTML = '<div class="text-center py-10 text-white/40 text-xs animate-pulse">Memuat daftar chapter...</div>';
 
             try {
                 const res = await fetch(`/api/manga/${mangaId}`);
-                const data = (await res.json()).data || {};
+                const jsonDetail = await res.json();
+                const data = jsonDetail.data || jsonDetail || {};
 
                 const chapRes = await fetch(`/api/manga/${mangaId}/chapters`);
-                let chapters = (await chapRes.json()).data?.chapters || [];
+                const chapJson = await chapRes.json();
                 
-                // Urutkan supaya Chapter 1 ada di bawah
+                let chapters = [];
+                if (Array.isArray(chapJson.data?.chapters)) chapters = chapJson.data.chapters;
+                else if (Array.isArray(chapJson.data)) chapters = chapJson.data;
+                else if (Array.isArray(chapJson.chapters)) chapters = chapJson.chapters;
+                else if (Array.isArray(chapJson)) chapters = chapJson;
+
                 if (chapters.length > 1) {
-                    const firstNum = parseInt(((chapters[0].title || '').match(/\d+/) || ['0'])[0]);
-                    const lastNum = parseInt(((chapters[chapters.length-1].title || '').match(/\d+/) || ['0'])[0]);
+                    const firstNumMatch = (chapters[0].title || chapters[0].chapterName || chapters[0].chapter || '').match(/\d+(\.\d+)?/);
+                    const lastNumMatch = (chapters[chapters.length-1].title || chapters[chapters.length-1].chapterName || chapters[chapters.length-1].chapter || '').match(/\d+(\.\d+)?/);
+                    
+                    const firstNum = firstNumMatch ? parseFloat(firstNumMatch[0]) : 0;
+                    const lastNum = lastNumMatch ? parseFloat(lastNumMatch[0]) : 0;
+                    
                     if (firstNum < lastNum) chapters.reverse();
                 }
                 currentChaptersList = chapters;
@@ -286,7 +296,7 @@
                 document.getElementById('detailSynopsis').innerText = synText;
                 isSynopsisExpanded = false;
                 document.getElementById('detailSynopsis').classList.add('line-clamp-3');
-                if (synText.length > 150) {
+                if (synText.length > 120) {
                     const btn = document.getElementById('synopsisToggleBtn');
                     btn.classList.remove('hidden');
                     btn.innerText = 'Baca Selengkapnya ▾';
@@ -294,18 +304,21 @@
 
                 const listContainer = document.getElementById('chapterListContainer');
                 if (chapters.length === 0) {
-                    listContainer.innerHTML = '<p class="text-white/40 py-4 text-sm">Belum ada chapter.</p>';
+                    listContainer.innerHTML = '<p class="text-red-400 py-4 text-xs font-semibold">Belum ada chapter.</p>';
                     return;
                 }
 
                 listContainer.innerHTML = chapters.map((ch, idx) => `
-                    <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-white/5 hover:bg-white/10 px-5 py-3.5 rounded-xl text-sm flex justify-between items-center transition group">
-                        <span class="font-medium text-white/80 group-hover:text-accent transition">${ch.title || 'Chapter ' + (chapters.length - idx)}</span>
-                        <span class="text-[11px] bg-accent text-black font-bold px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition">BACA</span>
+                    <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-white/5 hover:bg-white/10 px-4 py-3 rounded-xl text-xs sm:text-sm flex justify-between items-center transition group border border-white/5 hover:border-accent/40">
+                        <span class="font-semibold text-white/90 group-hover:text-accent transition">${ch.title || ch.chapterName || 'Chapter ' + (chapters.length - idx)}</span>
+                        <span class="text-[10px] bg-accent text-black font-extrabold px-2.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition shadow">BACA</span>
                     </button>
                 `).join('');
                 
-            } catch (err) { console.error(err); }
+            } catch (err) { 
+                console.error(err); 
+                document.getElementById('chapterListContainer').innerHTML = '<p class="text-red-400 py-4 text-xs">Gagal memuat chapter.</p>';
+            }
         }
 
         async function loadChapterPages(index) {
@@ -322,33 +335,38 @@
             document.getElementById('nextBtn').disabled = (index <= 0);
 
             const container = document.getElementById('pagesContainer');
-            container.innerHTML = '<div class="py-32 text-white/40 text-sm animate-pulse tracking-widest uppercase">Memuat Panel...</div>';
+            container.innerHTML = '<div class="py-24 text-white/40 text-xs animate-pulse tracking-widest uppercase">Memuat panel gambar...</div>';
 
-            // Simpan riwayat dengan tanggal
             const today = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
             saveToHistory({
                 id: currentMangaId,
                 title: document.getElementById('detailTitle').innerText,
                 thumbnail: document.getElementById('detailCover').src,
-                chapterTitle: chapter.title,
+                chapterTitle: chapter.title || `Chapter ${index+1}`,
                 date: today
             });
 
             try {
                 const res = await fetch(`/api/manga/chapter/${chapterId}/pages`);
-                const pages = (await res.json()).data?.pages || [];
+                const jsonPage = await res.json();
+                
+                let pages = [];
+                if (Array.isArray(jsonPage.data?.pages)) pages = jsonPage.data.pages;
+                else if (Array.isArray(jsonPage.data)) pages = jsonPage.data;
+                else if (Array.isArray(jsonPage.pages)) pages = jsonPage.pages;
+                else if (Array.isArray(jsonPage)) pages = jsonPage;
 
                 if (pages.length === 0) {
-                    container.innerHTML = '<p class="text-red-400 py-20 text-sm">Gambar tidak ditemukan.</p>';
+                    container.innerHTML = '<p class="text-red-400 py-16 text-xs font-bold">Gambar tidak ditemukan di server.</p>';
                     return;
                 }
 
                 container.innerHTML = pages.map(page => {
-                    const url = typeof page === 'string' ? page : page.url;
-                    return `<img src="${url}" class="w-full max-w-3xl block mx-auto object-contain mb-1" loading="lazy">`;
+                    const url = typeof page === 'string' ? page : (page.url || page.imageUrl || page);
+                    return `<img src="${url}" class="w-full max-w-3xl block mx-auto object-contain mb-0.5 bg-black" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800?text=Gagal+Muat'">`;
                 }).join('');
             } catch (err) {
-                container.innerHTML = '<p class="text-red-400 py-20 text-sm">Gagal memuat gambar.</p>';
+                container.innerHTML = '<p class="text-red-400 py-16 text-xs font-bold">Gagal memuat gambar.</p>';
             }
         }
 
@@ -378,30 +396,29 @@
             }
         }
 
-        // FUNGSI RENDER HISTORY MODEL LIST
         function showHistory() {
             switchView('historyView');
             const history = JSON.parse(localStorage.getItem('manhwa_history') || '[]');
             const container = document.getElementById('historyContainer');
             
             if (history.length === 0) {
-                container.innerHTML = '<div class="w-full text-center py-20 text-white/40 text-sm bg-cardbg rounded-2xl border border-white/5">Riwayat masih kosong.</div>';
+                container.innerHTML = '<div class="w-full text-center py-16 text-white/40 text-xs bg-cardbg rounded-2xl border border-white/5 font-semibold">Riwayat masih kosong.</div>';
                 return;
             }
 
             container.innerHTML = history.map(h => `
-                <div class="bg-cardbg rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 border border-white/5 shadow-md hover:border-white/10 transition">
-                    <img src="${h.thumbnail}" class="w-20 h-28 object-cover rounded-lg flex-shrink-0 bg-white/5" onerror="this.src='https://via.placeholder.com/80x112?text=No+Image'">
+                <div class="bg-cardbg rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center gap-3.5 border border-white/5 shadow-md hover:border-white/10 transition">
+                    <img src="${h.thumbnail}" class="w-16 h-22 object-cover rounded-lg flex-shrink-0 bg-white/5" onerror="this.src='https://via.placeholder.com/80x112?text=No+Image'">
                     
                     <div class="flex-grow min-w-0">
-                        <h3 class="text-white font-bold text-base sm:text-lg line-clamp-1 mb-1">${h.title}</h3>
-                        <p class="text-brandbtn text-xs sm:text-sm flex items-center gap-1 font-medium bg-brandbtn/10 inline-block px-2 py-0.5 rounded text-white font-bold">
+                        <h3 class="text-white font-bold text-sm sm:text-base line-clamp-1 mb-1">${h.title}</h3>
+                        <p class="text-accent text-xs font-bold bg-accent/10 inline-block px-2 py-0.5 rounded border border-accent/20 mb-1.5">
                             🔖 ${h.chapterTitle}
                         </p>
-                        <p class="text-white/40 text-xs mt-2 font-medium">Dibaca pada: ${h.date || 'Hari ini'}</p>
+                        <p class="text-white/40 text-[11px] font-medium">Dibaca pada: ${h.date || 'Hari ini'}</p>
                     </div>
                     
-                    <button onclick="loadDetail('${h.id}')" class="w-full sm:w-auto mt-3 sm:mt-0 bg-brandbtn hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition shadow-lg shadow-brandbtn/20 flex-shrink-0">
+                    <button onclick="loadDetail('${h.id}')" class="w-full sm:w-auto mt-2 sm:mt-0 bg-brandbtn hover:bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-lg shadow-indigo-500/20 flex-shrink-0">
                         ▶ Lanjut Baca
                     </button>
                 </div>
@@ -412,5 +429,4 @@
     </script>
 </body>
 </html>
-
 
