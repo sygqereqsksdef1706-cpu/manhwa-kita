@@ -127,7 +127,6 @@
             </div>
 
             <div class="max-w-3xl mx-auto flex items-center justify-between bg-cardbg p-3.5 rounded-xl border border-white/10 shadow-lg">
-                <!-- Navigasi Reader yang sudah disinkronkan -->
                 <button id="prevBtn" onclick="changeChapter(1)" class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg text-xs font-bold transition disabled:opacity-20 flex items-center gap-2">
                     &larr; Sebelumnya
                 </button>
@@ -276,8 +275,6 @@
                 else if (Array.isArray(chapJson.chapters)) chapters = chapJson.chapters;
                 else if (Array.isArray(chapJson)) chapters = chapJson;
 
-                // TANPA REVERSE: Biarkan data asli dari API (di mana chapter terbaru ada di atas, ch 1 di bawah)
-                // Kita simpan array mentah apa adanya agar index klik tidak meleset
                 currentChaptersList = chapters;
 
                 document.getElementById('detailCover').src = data.thumbnail || data.cover || '';
@@ -300,13 +297,16 @@
                     return;
                 }
 
-                // Render sesuai indeks asli array supaya pas diklik index-nya klop 100%
-                listContainer.innerHTML = chapters.map((ch, idx) => `
-                    <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-white/5 hover:bg-white/10 px-4 py-3 rounded-xl text-xs sm:text-sm flex justify-between items-center transition group border border-white/5 hover:border-accent/40">
-                        <span class="font-semibold text-white/90 group-hover:text-accent transition">${ch.title || ch.chapterName || 'Chapter'}</span>
-                        <span class="text-[10px] bg-accent text-black font-extrabold px-2.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition shadow">BACA</span>
-                    </button>
-                `).join('');
+                // PERBAIKAN: Deteksi teks chapter dengan aman (ch.title, ch.chapterName, ch.chapter, ch.name)
+                listContainer.innerHTML = chapters.map((ch, idx) => {
+                    const chTitle = ch.title || ch.chapterName || ch.chapter || ch.name || `Chapter ${chapters.length - idx}`;
+                    return `
+                        <button onclick="loadChapterPages(${idx})" class="w-full text-left bg-white/5 hover:bg-white/10 px-4 py-3 rounded-xl text-xs sm:text-sm flex justify-between items-center transition group border border-white/5 hover:border-accent/40">
+                            <span class="font-semibold text-white/90 group-hover:text-accent transition">${chTitle}</span>
+                            <span class="text-[10px] bg-accent text-black font-extrabold px-2.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition shadow">BACA</span>
+                        </button>
+                    `;
+                }).join('');
                 
             } catch (err) { 
                 console.error(err); 
@@ -320,13 +320,11 @@
             if (!chapter) return;
             
             const chapterId = chapter.url || chapter.chapterId || chapter.id;
+            const chapterName = chapter.title || chapter.chapterName || chapter.chapter || chapter.name || `Chapter ${index+1}`;
 
             switchView('readerView');
-            document.getElementById('readerTitle').innerText = chapter.title || `Chapter`;
+            document.getElementById('readerTitle').innerText = chapterName;
             
-            // Karena API memberikan data dari atas ke bawah (terbaru ke ch 1):
-            // Tombol "Sebelumnya" (mundur ke list bawah / chapter lama) berarti index BERTAMBAH (+)
-            // Tombol "Selanjutnya" (maju ke list atas / chapter baru) berarti index BERKURANG (-)
             document.getElementById('prevBtn').disabled = (index >= currentChaptersList.length - 1);
             document.getElementById('nextBtn').disabled = (index <= 0);
 
@@ -338,7 +336,7 @@
                 id: currentMangaId,
                 title: document.getElementById('detailTitle').innerText,
                 thumbnail: document.getElementById('detailCover').src,
-                chapterTitle: chapter.title || `Chapter`,
+                chapterTitle: chapterName,
                 date: today
             });
 
@@ -367,9 +365,6 @@
         }
 
         function changeChapter(direction) {
-            // Karena array asli dari API membuat chapter terbaru di atas (index 0) dan chapter 1 di bawah:
-            // Tombol "Sebelumnya" mengirim direction 1 (index + 1 = turun ke chapter lama)
-            // Tombol "Selanjutnya" mengirim direction -1 (index - 1 = naik ke chapter baru)
             const newIndex = currentChapterIndex + direction;
             if (newIndex >= 0 && newIndex < currentChaptersList.length) {
                 loadChapterPages(newIndex);
